@@ -4,7 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 
 import java.time.Duration;
 
@@ -18,27 +19,16 @@ public class BaseClass {
     By password_locator = By.cssSelector("#password");
     By login_button_locator = By.cssSelector("#login-button");
 
-    public void setUp(String browser){
-        switch (browser) {
-            case "chrome" -> {
-                System.setProperty("webdriver.chrome.driver", chromeBrowser);
-                driver = new ChromeDriver();
-                System.out.println("Running on: " + browser);
-
-            }
-            case "firefox" -> {
-                System.setProperty("webdriver.gecko.driver", firefoxBrowser);
-                driver = new FirefoxDriver();
-                System.out.println("Running on : " + browser);
-
-            }
-            default -> System.out.println(browser + "is not supported");
-        }
+    @BeforeMethod
+    public void setUp(){
+        System.setProperty("webdriver.chrome.driver", chromeBrowser);
+        driver = new ChromeDriver();
         driver.get(URL);
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
 
     }
 
+    @AfterMethod
     public void ending() throws InterruptedException {
         Thread.sleep(1000);
         driver.quit();
